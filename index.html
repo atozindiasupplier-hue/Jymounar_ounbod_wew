@@ -130,157 +130,23 @@
             color: #ffffff;
         }
 
+        .submit-btn:disabled {
+            background-color: #475569;
+            cursor: not-allowed;
+            color: #94a3b8;
+        }
+
         .success-msg {
             display: none;
             text-align: center;
-            color: #10b981;
             font-weight: 600;
             margin-top: 15px;
-            padding: 10px;
-            background: rgba(16, 185, 129, 0.1);
+            padding: 12px;
             border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         /* Bottom Bar Footer */
         .bottom-bar {
-            background-color: #0f172a;
-            color: #94a3b8;
-            text-align: center;
-            padding: 15px 20px;
-            font-size: 13px;
-            line-height: 1.6;
-            border-top: 1px solid #1e293b;
-        }
-
-        .footer-highlight {
-            color: #10b981;
-            font-weight: 600;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Top Bar -->
-    <header class="top-bar">
-        <div class="brand-title">Uttam Horizon</div>
-        <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">Language: Hindi</button>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <div class="form-card">
-            <h2 class="form-title" id="formHeading">Uttam Horizon Gym Launch</h2>
-            <form id="leadForm">
-                <div class="form-group">
-                    <label id="lblOwner">Owner Name</label>
-                    <input type="text" id="owner_name" value="Uttam Kumar" required>
-                </div>
-                <div class="form-group">
-                    <label id="lblGym">Gym Name</label>
-                    <input type="text" id="gym_name" value="Power Fitness Hub" required>
-                </div>
-                <div class="form-group">
-                    <label id="lblLocation">Location / City</label>
-                    <input type="text" id="location" value="Patna, Bihar" required>
-                </div>
-                <div class="form-group">
-                    <label id="lblMembers">Gym Size / Active Members</label>
-                    <input type="text" id="member_count" value="120 Members" required>
-                </div>
-                <div class="form-group">
-                    <label id="lblContact">Phone Number & Email</label>
-                    <input type="text" id="phone_email" value="9876543210 / rahul@gym.com" required>
-                </div>
-                <div class="form-group">
-                    <label id="lblPlan">Select Plan Details</label>
-                    <select id="selected_plan">
-                        <option value="Basic Plan - 1000/mo (30 Users Free)">Basic Plan - 1000/mo (30 Users Free)</option>
-                        <option value="Standard Plan - 2000/mo (30 Users + 20% commission)">Standard Plan - 2000/mo (30 Users + 20% commission)</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn" id="btnSubmit">Submit Lead</button>
-                <div id="successMessage" class="success-msg">Lead submitted successfully! Data saved.</div>
-            </form>
-        </div>
-    </main>
-
-    <!-- Bottom Bar Footer -->
-    <footer class="bottom-bar">
-        <p><span class="footer-highlight">A to Z India Supplier</span> | Powered by Uttam Horizon</p>
-        <p>Uttam Horizon B2B Supplies All Products via A to Z India Supplier.</p>
-    </footer>
-
-    <!-- Working Language Switcher Logic -->
-    <script>
-        let currentLang = 'EN';
-
-        const translations = {
-            EN: {
-                btnText: "Language: Hindi",
-                heading: "Uttam Horizon Gym Launch",
-                owner: "Owner Name",
-                gym: "Gym Name",
-                location: "Location / City",
-                members: "Gym Size / Active Members",
-                contact: "Phone Number & Email",
-                plan: "Select Plan Details",
-                submit: "Submit Lead",
-                success: "Lead submitted successfully! Data saved."
-            },
-            HI: {
-                btnText: "Language: English",
-                heading: "उत्तम हॉराइज़न जिम लॉन्च",
-                owner: "मालिक का नाम (Owner Name)",
-                gym: "जिम का नाम (Gym Name)",
-                location: "स्थान / शहर (Location)",
-                members: "सदस्यों की संख्या (Active Members)",
-                contact: "फोन नंबर और ईमेल",
-                plan: "प्लान चुनें (Select Plan)",
-                submit: "सबमिट करें (Submit Lead)",
-                success: "फॉर्म सफलतापूर्वक जमा हो गया! डेटा सेव हो गया है।"
-            }
-        };
-
-        function toggleLanguage() {
-            if (currentLang === 'EN') {
-                currentLang = 'HI';
-                applyTranslation(translations.HI);
-            } else {
-                currentLang = 'EN';
-                applyTranslation(translations.EN);
-            }
-        }
-
-        function applyTranslation(t) {
-            document.getElementById('langToggleBtn').innerText = t.btnText;
-            document.getElementById('formHeading').innerText = t.heading;
-            document.getElementById('lblOwner').innerText = t.owner;
-            document.getElementById('lblGym').innerText = t.gym;
-            document.getElementById('lblLocation').innerText = t.location;
-            document.getElementById('lblMembers').innerText = t.members;
-            document.getElementById('lblContact').innerText = t.contact;
-            document.getElementById('lblPlan').innerText = t.plan;
-            document.getElementById('btnSubmit').innerText = t.submit;
-            document.getElementById('successMessage').innerText = t.success;
-        }
-
-        document.getElementById('leadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                owner_name: document.getElementById('owner_name').value,
-                gym_name: document.getElementById('gym_name').value,
-                location: document.getElementById('location').value,
-                member_count: document.getElementById('member_count').value,
-                phone_email: document.getElementById('phone_email').value,
-                selected_plan: document.getElementById('selected_plan').value
-            };
-
-            console.log("JSON Data to be sent:", JSON.stringify(formData));
-            document.getElementById('successMessage').style.display = 'block';
-        });
-    </script>
-
-</body>
-  </html>
-                      
+            background-color: #0f172a
