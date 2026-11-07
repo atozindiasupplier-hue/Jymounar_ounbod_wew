@@ -149,4 +149,195 @@
 
         /* Bottom Bar Footer */
         .bottom-bar {
-            background-color: #0f172a
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-highlight {
+            color: #10b981;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="brand-title">Uttam Horizon</div>
+        <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">Language: Hindi</button>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="form-card">
+            <h2 class="form-title" id="formHeading">Uttam Horizon Gym Launch</h2>
+            <form id="leadForm">
+                <div class="form-group">
+                    <label id="lblOwner">Owner Name</label>
+                    <input type="text" id="owner_name" placeholder="Enter Owner Name" required>
+                </div>
+                <div class="form-group">
+                    <label id="lblGym">Gym Name</label>
+                    <input type="text" id="gym_name" placeholder="Enter Gym Name" required>
+                </div>
+                <div class="form-group">
+                    <label id="lblLocation">Location / City</label>
+                    <input type="text" id="location" placeholder="e.g. Patna, Bihar" required>
+                </div>
+                <div class="form-group">
+                    <label id="lblMembers">Gym Size / Active Members</label>
+                    <input type="text" id="member_count" placeholder="e.g. 120 Members" required>
+                </div>
+                <div class="form-group">
+                    <label id="lblContact">Phone Number & Email</label>
+                    <input type="text" id="phone_email" placeholder="Phone / Email" required>
+                </div>
+                <div class="form-group">
+                    <label id="lblPlan">Select Plan Details</label>
+                    <select id="selected_plan">
+                        <option value="Basic Plan - 1000/mo (30 Users Free)">Basic Plan - 1000/mo (30 Users Free)</option>
+                        <option value="Standard Plan - 2000/mo (30 Users + 20% commission)">Standard Plan - 2000/mo (30 Users + 20% commission)</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn" id="btnSubmit">Submit Lead</button>
+                <div id="successMessage" class="success-msg"></div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Bottom Bar Footer -->
+    <footer class="bottom-bar">
+        <p><span class="footer-highlight">A to Z India Supplier</span> | Powered by Uttam Horizon</p>
+        <p>Uttam Horizon B2B Supplies All Products via A to Z India Supplier.</p>
+    </footer>
+
+    <!-- Working Language Switcher & API Integration Logic -->
+    <script>
+        let currentLang = 'EN';
+        let lastBackendSignature = '';
+
+        const translations = {
+            EN: {
+                btnText: "Language: Hindi",
+                heading: "Uttam Horizon Gym Launch",
+                owner: "Owner Name",
+                gym: "Gym Name",
+                location: "Location / City",
+                members: "Gym Size / Active Members",
+                contact: "Phone Number & Email",
+                plan: "Select Plan Details",
+                submit: "Submit Lead",
+                submitting: "Submitting to Backend...",
+                errorServer: "Server connection failed! Please try again."
+            },
+            HI: {
+                btnText: "Language: English",
+                heading: "उत्तम हॉराइज़न जिम लॉन्च",
+                owner: "मालिक का नाम (Owner Name)",
+                gym: "जिम का नाम (Gym Name)",
+                location: "स्थान / शहर (Location)",
+                members: "सदस्यों की संख्या (Active Members)",
+                contact: "फोन नंबर और ईमेल",
+                plan: "प्लान चुनें (Select Plan)",
+                submit: "सबमिट करें (Submit Lead)",
+                submitting: "डेटा भेजा जा रहा है...",
+                errorServer: "सर्वर से संपर्क नहीं हो पाया! कृपया पुनः प्रयास करें।"
+            }
+        };
+
+        function toggleLanguage() {
+            if (currentLang === 'EN') {
+                currentLang = 'HI';
+                applyTranslation(translations.HI);
+            } else {
+                currentLang = 'EN';
+                applyTranslation(translations.EN);
+            }
+        }
+
+        function applyTranslation(t) {
+            document.getElementById('langToggleBtn').innerText = t.btnText;
+            document.getElementById('formHeading').innerText = t.heading;
+            document.getElementById('lblOwner').innerText = t.owner;
+            document.getElementById('lblGym').innerText = t.gym;
+            document.getElementById('lblLocation').innerText = t.location;
+            document.getElementById('lblMembers').innerText = t.members;
+            document.getElementById('lblContact').innerText = t.contact;
+            document.getElementById('lblPlan').innerText = t.plan;
+            
+            const btn = document.getElementById('btnSubmit');
+            if (!btn.disabled) {
+                btn.innerText = t.submit;
+            }
+        }
+
+        // Live Render Backend API Integration
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('btnSubmit');
+            const msgBox = document.getElementById('successMessage');
+            const t = translations[currentLang];
+
+            btn.disabled = true;
+            btn.innerText = t.submitting;
+
+            msgBox.style.display = 'none';
+            msgBox.style.background = 'rgba(16, 185, 129, 0.1)';
+            msgBox.style.color = '#10b981';
+
+            const formData = {
+                owner_name: document.getElementById('owner_name').value,
+                gym_name: document.getElementById('gym_name').value,
+                location: document.getElementById('location').value,
+                member_count: document.getElementById('member_count').value,
+                phone_email: document.getElementById('phone_email').value,
+                selected_plan: document.getElementById('selected_plan').value
+            };
+
+            try {
+                const response = await fetch('https://jymlead-baykend-js.onrender.com/api/leads', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    lastBackendSignature = data.signature || '';
+                    msgBox.style.background = 'rgba(16, 185, 129, 0.15)';
+                    msgBox.style.color = '#10b981';
+                    msgBox.innerHTML = `✅ <strong>${data.message}</strong><br><small style="color: #94a3b8;">Ref Signature: ${data.signature}</small>`;
+                    msgBox.style.display = 'block';
+
+                    // Form Reset
+                    document.getElementById('leadForm').reset();
+                } else {
+                    msgBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                    msgBox.style.color = '#ef4444';
+                    msgBox.innerHTML = `❌ ${data.message}`;
+                    msgBox.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                msgBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                msgBox.style.color = '#ef4444';
+                msgBox.innerText = `❌ ${t.errorServer}`;
+                msgBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = t.submit;
+            }
+        });
+    </script>
+
+</body>
+</html>
